@@ -72,3 +72,42 @@ coldest temperature in kodaikanal ,temperature
 hottest temperature in chennai,temperature
 coolest on monday,temperature
 coolest temperature in lucknow,temperature
+Hi,greeting
+How are you?,greeting
+what about you?,greeting
+Good Morning,greeting
+good evening,greeting
+good night,greeting
+Wassup.?,greeting
+Hi how are you?,greeting
+hope you are doing well,greeting
+how are things going,greeting
+who are you?,greeting
+how are you doing?,greeting
+hello,greeting
+Heya how are you?,greeting
+hi wassup?,greeting
+sup bro?,greeting
+sup dude?,greeting
+nothing,default
+greetings,greeting
+hi greetings,greeting
+blah blah ,default
+no,default
+nope,default
+i don’t know,default
+go to hell,default
+fuck off,default
+are you mad?,default
+stupid,default
+you can’t help me,default
+i don’t need your help,default
+get lost,default
+you are dumb,default
+you are stupid,default
+kncjdskn,default
+bye,greeting
+thank you,greeting
+thanks,greeting
+your’e welcome,greeting
+welcome,greeting
