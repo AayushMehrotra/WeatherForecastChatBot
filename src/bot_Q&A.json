@@ -2,7 +2,7 @@
 	"random": {
 		"Hi": [
 			"Hi, how can I help you? ",
-			"Hi, How can I can help you about the weather?",
+			"Hi.Glad to have you back..:)",
 			"Hi, hope you are doing well. Tell me how can I help you?",
 			"How can I assist you?"
 		],
@@ -17,7 +17,7 @@
 			"Hello I am gathering new information for you. Tell me how can I assist you?"
 		],
 		"who are you?": [
-			"I am a weather bot. You can ask me anything about the weather. How can I can help you about the weather?",
+			"I am a weather bot. You can ask me anything about the weather. What weather information can I provide you.?",
 			"Hey, I am a weather bot. I am here to help you to know about the weather. What do you want to ask me?"
 		],
 		"Tell me about you": [
@@ -26,7 +26,7 @@
 		],
 		"Hey whatsup?": [
 			"Hey, I am a weather bot. I am here to help you to know about the weather.What do you want to ask me?",
-			"Hey, hope you are doing good!If you want to know anything about the weather shoot more questions.",
+			"Hey, hope you are doing good!If you want to know anything about the weather shoot your questions.",
 			"hey! Share your location to get the weather details"
 		],
 		"good morning": [
@@ -69,30 +69,41 @@
 			"Hope you got the information you needed! Have a great day.You can ask for more anytime "
 		],
 		"you have got  nice information": [
-			"Thank you for your feedback. I will update more so that I can help you in a better way",
-			"Its so nice to hear from you. Will try to keep it up"
+			"Thank you for your feedback. I will update more so that I can help you in a better way..:)",
+			"Its so nice to hear from you. Will try to keep it up..:)"
 		],
 		"nothing": [
-			"Thank you! Hope you got the information you needed. Have a nice day"
+			"Thank you! Hope you got the information you needed. Have a nice day..:)"
 		],
+            		"no": [
+			"Thank you! Hope you got the information you needed. Have a nice day..:)"
+		],
+
 		"its okay": [
 			"Thank you! Hope the information is useful. Have a good day"
-		],		"you are stupid": [
-			"I think you are :P"
+		],
+            "you are stupid": [
+			"Soryy I did not get you..;)"
+		],
+                "are you mad?": [
+			"Soryy I did not get you..;)"
 		],
 		"I dont want to talk with you": [
-			"As if I care ;)"
+			"Sorry I did not get you;)"
 		],
 		"I went to my hometown": [
-			"Good for you :P"
-		]
+			"Sorry I cant get you;)"
+		],
+            "byee":["Byee.Have a nice day.Hope I was able to help you..:)"],
+                "bye":["Byee.Have a nice day.Hope to have you back soon..:)"]
+                
 
 
 	},
 	"weather": {
 		"What is the weather like outside?": [
 			"Hey {day_of_week}'s weather during day will be {weather_day} and during night will be {weather_night} .",
-			"Hey it will be {weather_day} in day time and {weather_night} in night time ."
+			"Hey it will be {weather_day} in day time and (weather_night} in night time ."
 		],
 
 		"How is the weather?": [
@@ -100,7 +111,7 @@
 			"Hey it will be {weather_day} in day time and {weather_night} in night time. Enjoy your day"
 		],
 		"weather update": [
-			"Here comes the weather report of your day: {weather_day} and during night: {weather_night},Temperature: {temp} degree celsius, Maximum Temperature:{maxtemp} degree celsius, Minimum Temperture:{mintemp}degree celsius. Have a great day.",
+			"Here comes the weather report for day: {weather_day} and during night: {weather_night},Temperature: {temp} degree celsius, Maximum Temperature:{maxtemp} degree celsius, Minimum Temperture:{mintemp}degree celsius. Have a great day.",
 			"Weather report, during day:{weather_day} and during night:{weather_night}, Temperature:{temp} degree celsius , Maximum Temperature:{maxtemp} degree celsius , Minimum Temperature:{mintemp} degree celsius. Have a nice day."
 		],
 		"What will be the weather?": [
@@ -119,10 +130,10 @@
 			"{rain}, it will {flag}. Probability of rain during day is {percentrain_day} % and probability of rain during night is {percentrain_night} %."
 		],
 		"will it rain ?": [
-			"{rain}, it will {flag}"
+			"{rain}, it will {flag} in {city}."
 		],
 		"Is it likely to rain?": [
-			"{rain}, it will {flag}"
+			"{rain}, it will {flag} in {city}."
 		],
 		"Is it raining?": [
 			"{rain}, it is!"
