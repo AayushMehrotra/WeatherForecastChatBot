@@ -25,6 +25,8 @@ class WeatherBot:
     
     def __init__(self):
         self.file = json.loads(open('bot_Q&A.json').read())
+        self.intent = None
+        self.location = None
 
     def get_day_of_week(self, question):
 
@@ -52,45 +54,39 @@ class WeatherBot:
 
     def get_location(self, question):
 
-        location_tagger = StanfordNERTagger('Tagger/stanford-ner-2016-10-31/classifiers/english.all.3class.distsim.crf.ser.gz', 'Tagger/stanford-ner-2016-10-31/stanford-ner-3.7.0.jar')
-        question = question.title()
-        tag = location_tagger.tag(question.split())
-        loc_word = ''
-        for word,tag in tag:
-            if(tag == 'LOCATION'):
-                loc_word = loc_word + ", " + word
-            loc_word = loc_word.strip()
-        if loc_word == '':
-            loc_word = 'No Location'
-        return loc_word
+    location_tagger = StanfordNERTagger('Tagger/stanford-ner-2016-10-31/classifiers/english.conll.4class.distsim.crf.ser.gz', 'Tagger/stanford-ner-2016-10-31/stanford-ner-3.7.0.jar')
+    question = question.title()
+    tag = location_tagger.tag(question.split())
+    loc_word = ''
+    for word,tag in tag:
+        if(tag == 'LOCATION'):
+            loc_word = loc_word + ", " + word
+        loc_word = loc_word.strip()
+    if loc_word == '':
+        loc_word = None
+    return loc_word
 
     def get_location_id(self, city):
      # Get location ID for that city
-        count = 0
-        flag = True
-        lookup = pywapi.get_location_ids(city)
-        while len(lookup) != 1:
-            if len(lookup) > 1:
-                for key,value in lookup.items():
-                    if 'India' in value:
-                        location_id = key
-                        city = value
-                        lookup = pywapi.get_location_ids(city)
-                        flag = False
-                        break
-            if flag == False:
-                break
-            if len(lookup) == 0:
-                print('Curent Location ',city,' is unable to locate')
-                city = input('Please provide the location correctly: ')
-                count += 1
-                lookup = pywapi.get_location_ids(city)
-                if count == 2:
-                    city = input('Please provide the best nearest location, we are unable to find that for you : ')
+           count = 0
+    flag = True
+    lookup = pywapi.get_location_ids(city)
+    while len(lookup) != 1:
+        if len(lookup) > 1:
+            for key,value in lookup.items():
+                if 'India' in value:
+                    location_id = key
+                    city = value
                     lookup = pywapi.get_location_ids(city)
-        for k in lookup:
-            location_id = k
-        return location_id,city
+                    flag = False
+                    break
+        if flag == False:
+            break
+        if len(lookup) == 0:
+            return "Fail",None
+    for k in lookup:
+        location_id = k
+    return location_id,city
 
     def get_weather_of_day(self, weather_com, day_of_week):
         weekday = ''
@@ -99,11 +95,6 @@ class WeatherBot:
                 weekday = get_day
                 break
         return weekday
-
-
-    def get_weather_com(self, location_id):
-        weather_com = pywapi.get_weather_from_weather_com(location_id) 
-        return weather_com
 
     def get_traindata(self):
         train_csv = pd.read_csv('weathertrain.csv',header= None,names = ['sentence','label'])
@@ -124,7 +115,13 @@ class WeatherBot:
         test_sentence = query
         vocabulary,classifier = self.trainNBC()
         featurized_test_sentence =  {i:(i in word_tokenize(test_sentence.lower())) for i in vocabulary}
-        ans = classifier.classify(featurized_test_sentence)
+        for k,v in featurized_test_sentence.items():
+            if v == True:
+                count += 1
+            if count == 0:
+                ans = None
+            else:
+                ans = classifier.classify(featurized_test_sentence)
         return ans
 
     def get_weather(self, city, day_of_week, old_category, query):
@@ -146,10 +143,12 @@ class WeatherBot:
                   'weather_night':'Clear',
                   'flag':'not rain',
                   'city':city,
-                  'category':old_category
+                  'category':old_category,
+                  'day_of_week':day_of_week
                  }
         if weekday == '':
             return None
+        output['temp'] = int(weather_com['current_conditions']['temperature'])
         weekday_weather = weather_com['forecasts'][weekday]
         category = self.get_class(query)
         output['maxtemp'] = weekday_weather['high']
@@ -186,48 +185,70 @@ class WeatherBot:
     def get_question_match(self, user_question, question_list):
         question_similarity = {}
         for i in question_list:
-            cosine = self.get_cosine(self.text_to_vector(user_question), self.text_to_vector(i))
+            cosine = self.get_cosine(self.text_to_vector(user_question.lower()), self.text_to_vector(i.lower()))
             question_similarity[i] = cosine
-        sorted(question_similarity.items(), key=operator.itemgetter(1), reverse=True)  
-        for i, j in question_similarity.items():
-            return i
+        sorted_questions = sorted(question_similarity.items(), key=operator.itemgetter(1), reverse=True)  
+        return sorted_questions[0][0]
 
     def get_response(self, question, category):
         similar_question = self.get_question_match(question, list(self.file[category].keys()))
         response_to_user = random.choice(self.file[category][similar_question])
         return response_to_user
 
-    def respond(self, query):
-        print(query)
-        count = 0
-        old_category = None
-        old_category = None
-        # query = input('Hello! What do you want to know ? ')
-        question = "".join(l for l in query if l not in string.punctuation)
-        category = self.get_class(question)
-        if category == 'default':
-            print("Sorry, I didn't get you..!!")
-            exit
-        city = self.get_location(question)
-        if city == 'No Location' and count == 0:
-            output = 'Please provide your location'
-            new_ques = question + ' in ' + city
-            city = self.get_location(new_ques)
-        elif city == 'No Location' and count != 0:
-            city = old_city
-            category = old_category
-        else:
-            count = 0
-            print('Getting details for:',city[2:])
-        day_of_week = self.get_day_of_week(question)
-        response_user = self.get_response(question, category)
-        weather = self.get_weather(city,day_of_week,old_category,query)
-        output = response_user.format(**weather)
-        if weather == None:
-            print('Cannnot predict for data more than 5 days')
-            exit
-        print(output)
-        old_city= city
-        old_category = category
-        count += 1
-        return output
+
+    def user_response(self,query):
+
+    	    query = ' '.join(l for l in word_tokenize(query) if l not in string.punctuation)
+	    category = self.get_class(query)
+	    city = self.get_location(query)
+	    day_of_week = self.get_day_of_week(query)
+	    
+	    if category == None and city == None:
+		output = self.get_response(query, "random")
+		return output
+	    
+	    elif city == None and self.location == None:
+		self.intent = category
+		return 'Please enter your location'
+	    
+	    elif city != None and self.intent == None:
+		self.location = city
+		return 'What do you wanna Know?'
+	       
+	    elif city == None and category != None:
+		city = self.location
+		weather = self.get_weather(city,day_of_week,category)
+		if weather == None:
+		    return 'Cannot predict data for more than 5 days'
+		else:
+		    response_user = self.get_response(query, category)
+		    output = response_user.format(**weather)
+		    self.intent = category
+		    self.location = city
+		    return output
+	
+	    elif city != None and category == None:
+		category = self.intent
+		weather = self.get_weather(city,day_of_week,category)
+		self.location = city
+		if weather == None:
+		    return 'Cannot predict data for more than 5 days'
+		else:
+		    response_user = self.get_response(query, category)
+		    output = response_user.format(**weather)
+		    self.intent = category
+		    self.location = city
+		    return output
+	    
+	    else:
+		self.location = city
+		self.intent = category
+		weather = self.get_weather(city,day_of_week,category)
+		if weather == None:
+		    return 'Cannot predict data for more than 5 days'
+		else:
+		    response_user = self.get_response(query, category)
+		    output = response_user.format(**weather)
+		    self.intent = category
+		    self.location = city
+		    return output    
