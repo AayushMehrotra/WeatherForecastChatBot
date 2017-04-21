@@ -2,47 +2,47 @@
 	"greeting": {
 		"Hi": [
 			"Hi, how can I help you? ",
-			"May I help you?",
+			"Hi, How can I can help you about the weather?",
 			"Hi, hope you are doing well. Tell me how can I help you?",
 			"How can I assist you?"
 		],
 		"Hello": [
 			"Hey, hope you are having a good day. How can I help you?",
-			"Hello how can I help you on this awesome day!",
-			"Hi do you need any help?"
+			"Hello how can I help you on this awesome day?",
+			"Hi, How can I help you about the weather?"
 		],
 		"Hi, what are you doing?": [
-			"Hi.Nothing much. Do you want to know anything from me?",
+			"Hi.Nothing much. What do you want to know about the weather?",
 			"Hey I am updating information for you!Tell me how can I help you?",
 			"Hello I am gathering new information for you. Tell me how can I assist you?"
 		],
 		"who are you?": [
-			"I am a weather bot. You can ask me about anything about weather. Do you want to ask anything about weather from me?",
-			"Hey, I am a weather bot. I am here to help you to know about the weather.Do you want to ask anything?"
+			"I am a weather bot. You can ask me anything about the weather. How can I can help you about the weather?",
+			"Hey, I am a weather bot. I am here to help you to know about the weather.what do you want to ask me?"
 		],
 		"Tell me about you": [
-			"I am a weather bot. You can ask me about anything about weather. Do you want to ask anything about weather from me?",
-			"Hey, I am a weather bot. I am here to help you to know about the weather.Do you want to ask anything?"
+			"I am a weather bot. You can ask me about anything about weather.Tell me your location I'll share you the weather!",
+			"Hey, I am a weather bot. I am here to help you to know about the weather.What do you want to ask me?"
 		],
 		"Hey whatsup?": [
-			"Hello.I am a weather bot.Do you want to know anything about weather?",
+			"Hey, I am a weather bot. I am here to help you to know about the weather.What do you want to ask me?",
 			"Hey, hope you are doing good!If you want to know anything about the weather shoot me up with questions.",
 			"hey! Share your location to get the weather details"
 		],
 		"good morning": [
 			"Good morning!Hopeyou are having a good day! How can I help you?",
-			"Happy morning. Do you want to know anything about the weather?",
-			"Very Good morning! What do you want to know from me about weather?"
+			"Happy morning. What do you want to know about the weather?",
+			"Very Good morning! What do you want to know from me about the weather?"
 		],
 		"Good afternoon": [
 			"Good afternoon!Hopeyou are having a good day! How can I help you?",
-			"Happy afternoon. Do you want to know anything about the weather?",
-			"Very Good afternoon! What do you want to know from me about weather?"
+			"Happy Noon. What do you want to know about the weather?",
+			"Very Good afternoon! What do you want to know from me about the weather?"
 		],
 		"Good evening": [
 			"Good evening!Hopeyou are having a good day! How can I help you?",
-			"Happy evening. Do you want to know anything about the weather?",
-			"Very Good evening! What do you want to know from me about weather?"
+			"Happy evening. What do you want to know about the weather?",
+			"Very Good evening! What do you want to know from me about the weather?"
 		],
 		"How are you": [
 			"Fine, thank you.What do you want to know about the weather?",
@@ -54,7 +54,7 @@
 			"Thank you for your kindness.I’ll continue the great work.If there is anything i need to change you can suggest me!"
 		],
 		"You are really bad": [
-			"Sorry for your trouble.Hope this wont happen again.I will try to come up with the best things i have.Thanks for your feedback"
+			"Sorry for your trouble.Hope this wont happen again.I will try to come up with the best things I have.Thanks for your feedback"
 		],
 		"Thank you for the information": [
 			"You are welcome.Do you want to know anything more?so that i can give you the more information.Have a good day"
@@ -71,6 +71,12 @@
 		"you have got the nice information": [
 			"Thank you for your comments.I will update more so that i can help you in a better way",
 			"Its so nice to hear from you will give you the same assistance all the time"
+		],
+        "nothing": [
+			"Thank you!Hope you got the information you need.Have a nice day"
+		],
+        "its okay": [
+			"Thank you!Hope the information is useful.Have a good day"
 		]
 
 	},
@@ -81,15 +87,15 @@
 		],
 
 		"How is the weather?": [
-			"Hey gud morning! Today’s weather during day will be {weather_day} and during night will be {weather_night} in your city. ",
-			"Hey it will be {weather_day} in day time and (weather_night} in night time today in your city."
+			"Hey, Today’s weather during day will be {weather_day} and during night will be {weather_night} in your city. ",
+			"Hey it will be {weather_day} in day time and (weather_night} in night time today in your city.Enjoy the weather of the day"
 		],
 		"weather update": [
-			"Here comes the weather report of your day: {weather_day} and during night: {weather_night}, {temp} degree celsius, {maxtemp} degree celsius, {mintemp}degree celsius. Have a great day.",
-			"Hope you have  good day with the awesome weather during day:{weather_day} and during night:{weather_night}, {temp} degree celsius , {maxtemp} degree celsius , {mintemp} degree celsius Have a great day."
+			"Here comes the weather report of your day: {weather_day} and during night: {weather_night},Temperature: {temp} degree celsius, Maximum Temperature:{maxtemp} degree celsius, Minimum Temperture:{mintemp}degree celsius. Have a great day.",
+			"Hope you have  good day with the awesome weather during day:{weather_day} and during night:{weather_night}, Temperature:{temp} degree celsius , Maximum Temperature:{maxtemp} degree celsius , Minimum Temperature:{mintemp} degree celsius Have a nice day."
 		],
 		"What will be the weather?": [
-			"Weather report of {city} on {day_of_week}: day :{weather_day} and night: {weather_night}, {temp} degree celsius, {maxtemp} degree celsius {mintemp} degree celsius .Hope you got the infomation! if you want to know anything more shoot up with the questions"
+			"Weather report of {city} on {day_of_week}: day :{weather_day} and night: {weather_night}, Temperature:{temp} degree celsius, Maximum Temperature:{maxtemp} degree celsius, Minimum Temperature:{mintemp} degree celsius .Hope you got the infomation you need! if you want to know anything more shoot up with the questions"
 		]
 	},
 
@@ -137,9 +143,20 @@
 			"The average temperature is {avgtemp}",
 			"Here is the average temperature of today is {avgtemp}"
 		],
-		"What is will be the average temperature": [
+		"What will be the average temperature": [
 			"The average temperature is {avgtemp}",
 			"Here is the average temperature of today is {avgtemp}"
 		]
-	}
+	},
+    "default":{
+     "you are stupid":[
+            "Soryy I did not get you.Ask me about the weather"
+      ],
+      "I dont want to talk with you":[
+            "Sorry I did not get you.Ask me about the weather"
+      ],
+      "I went to my hometown":[
+            "Sorry I cant get you.Ask me about the weather"
+      ]
+     }
 }
