@@ -12,7 +12,7 @@ print(slackbot_config)
 BOT_ID = slackbot_config["bot_id"]
 
 AT_BOT = "<@" + BOT_ID + ">"
-COMMAND = "getWeather"
+COMMAND = "getkab"
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(slackbot_config["api_token"])
@@ -24,7 +24,6 @@ def handle_command(command, channel):
     if they are valid commands. If so then acts on the command.
     If not returns what is needed for clarification
     """
-    print(command)
     response = "Not sure what you mean. Use the *" + COMMAND
     response = weather.respond(command)
     slack_client.api_call("chat.postMessage", channel=channel,
@@ -37,10 +36,10 @@ def parse_slack_output(slack_rtm_output):
         directed at the Bot, based on its ID.
     """
     output_list = slack_rtm_output
-    print(output_list)
+    # print(output_list)
     if output_list and len(output_list) > 0:
         for output in output_list:
-            print(output)
+            # print(output)
             if output and 'text' in output and AT_BOT in output['text']:
                 # return text after the @ mention, whitespace removed
                 return output['text'].split(AT_BOT)[1].strip().lower(), \
@@ -53,7 +52,7 @@ if __name__ == "__main__":
         print("StarterBot connected and running!")
         while True:
             command, channel = parse_slack_output(slack_client.rtm_read())
-            print(command, channel)
+            # print(command, channel)
             if command and channel:
                 handle_command(command, channel)
             time.sleep(READ_WEBSOCKET_DELAY)

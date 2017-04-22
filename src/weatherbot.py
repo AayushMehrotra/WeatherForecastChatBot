@@ -54,39 +54,39 @@ class WeatherBot:
 
     def get_location(self, question):
 
-    location_tagger = StanfordNERTagger('Tagger/stanford-ner-2016-10-31/classifiers/english.conll.4class.distsim.crf.ser.gz', 'Tagger/stanford-ner-2016-10-31/stanford-ner-3.7.0.jar')
-    question = question.title()
-    tag = location_tagger.tag(question.split())
-    loc_word = ''
-    for word,tag in tag:
-        if(tag == 'LOCATION'):
-            loc_word = loc_word + ", " + word
-        loc_word = loc_word.strip()
-    if loc_word == '':
-        loc_word = None
-    return loc_word
+        location_tagger = StanfordNERTagger('Tagger/stanford-ner-2016-10-31/classifiers/english.conll.4class.distsim.crf.ser.gz', 'Tagger/stanford-ner-2016-10-31/stanford-ner-3.7.0.jar')
+        question = question.title()
+        tag = location_tagger.tag(question.split())
+        loc_word = ''
+        for word,tag in tag:
+            if(tag == 'LOCATION'):
+                loc_word = loc_word + ", " + word
+            loc_word = loc_word.strip()
+        if loc_word == '':
+            loc_word = None
+        return loc_word
 
     def get_location_id(self, city):
-     # Get location ID for that city
-           count = 0
-    flag = True
-    lookup = pywapi.get_location_ids(city)
-    while len(lookup) != 1:
-        if len(lookup) > 1:
-            for key,value in lookup.items():
-                if 'India' in value:
-                    location_id = key
-                    city = value
-                    lookup = pywapi.get_location_ids(city)
-                    flag = False
-                    break
-        if flag == False:
-            break
-        if len(lookup) == 0:
-            return "Fail",None
-    for k in lookup:
-        location_id = k
-    return location_id,city
+         # Get location ID for that city
+        count = 0
+        flag = True
+        lookup = pywapi.get_location_ids(city)
+        while len(lookup) != 1:
+            if len(lookup) > 1:
+                for key,value in lookup.items():
+                    if 'India' in value:
+                        location_id = key
+                        city = value
+                        lookup = pywapi.get_location_ids(city)
+                        flag = False
+                        break
+            if flag == False:
+                break
+            if len(lookup) == 0:
+                return "Fail",None
+        for k in lookup:
+            location_id = k
+        return location_id,city
 
     def get_weather_of_day(self, weather_com, day_of_week):
         weekday = ''
@@ -115,6 +115,7 @@ class WeatherBot:
         test_sentence = query
         vocabulary,classifier = self.trainNBC()
         featurized_test_sentence =  {i:(i in word_tokenize(test_sentence.lower())) for i in vocabulary}
+        count = 0
         for k,v in featurized_test_sentence.items():
             if v == True:
                 count += 1
@@ -196,59 +197,58 @@ class WeatherBot:
         return response_to_user
 
 
-    def user_response(self,query):
-
-    	    query = ' '.join(l for l in word_tokenize(query) if l not in string.punctuation)
-	    category = self.get_class(query)
-	    city = self.get_location(query)
-	    day_of_week = self.get_day_of_week(query)
-	    
-	    if category == None and city == None:
-		output = self.get_response(query, "random")
-		return output
-	    
-	    elif city == None and self.location == None:
-		self.intent = category
-		return 'Please enter your location'
-	    
-	    elif city != None and self.intent == None:
-		self.location = city
-		return 'What do you wanna Know?'
-	       
-	    elif city == None and category != None:
-		city = self.location
-		weather = self.get_weather(city,day_of_week,category)
-		if weather == None:
-		    return 'Cannot predict data for more than 5 days'
-		else:
-		    response_user = self.get_response(query, category)
-		    output = response_user.format(**weather)
-		    self.intent = category
-		    self.location = city
-		    return output
-	
-	    elif city != None and category == None:
-		category = self.intent
-		weather = self.get_weather(city,day_of_week,category)
-		self.location = city
-		if weather == None:
-		    return 'Cannot predict data for more than 5 days'
-		else:
-		    response_user = self.get_response(query, category)
-		    output = response_user.format(**weather)
-		    self.intent = category
-		    self.location = city
-		    return output
-	    
-	    else:
-		self.location = city
-		self.intent = category
-		weather = self.get_weather(city,day_of_week,category)
-		if weather == None:
-		    return 'Cannot predict data for more than 5 days'
-		else:
-		    response_user = self.get_response(query, category)
-		    output = response_user.format(**weather)
-		    self.intent = category
-		    self.location = city
-		    return output    
+    def respond(self,query):
+        query = ' '.join(l for l in word_tokenize(query) if l not in string.punctuation)
+        category = self.get_class(query)
+        city = self.get_location(query)
+        day_of_week = self.get_day_of_week(query)
+        
+        if category == None and city == None:
+            output = self.get_response(query, "random")
+            return output
+        
+        elif city == None and self.location == None:
+            self.intent = category
+            return 'Please enter your location'
+        
+        elif city != None and category == None:
+            self.location = city
+            return 'What do you wanna Know?'
+           
+        elif city == None and category != None:
+            city = self.location
+            weather = self.get_weather(city,day_of_week, category, query)
+            if weather == None:
+                return 'Cannot predict data for more than 5 days'
+            else:
+                response_user = self.get_response(query, category)
+                output = response_user.format(**weather)
+                self.intent = category
+                self.location = city
+                return output
+    
+        elif city != None and category == None:
+            category = self.intent
+            weather = self.get_weather(city, day_of_week, category, query)
+            self.location = city
+            if weather == None:
+                return 'Cannot predict data for more than 5 days'
+            else:
+                response_user = self.get_response(query, category)
+                output = response_user.format(**weather)
+                self.intent = category
+                self.location = city
+                return output
+        
+        else:
+            self.location = city
+            self.intent = category
+            weather = self.get_weather(city, day_of_week, category, query)
+            if weather == None:
+                return 'Cannot predict data for more than 5 days'
+            else:
+                response_user = self.get_response(query, category)
+                output = response_user.format(**weather)
+                self.intent = category
+                self.location = city
+                return output    

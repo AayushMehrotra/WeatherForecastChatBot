@@ -103,7 +103,7 @@
 	"weather": {
 		"What is the weather like outside?": [
 			"Hey {day_of_week}'s weather during day will be {weather_day} and during night will be {weather_night} .",
-			"Hey it will be {weather_day} in day time and (weather_night} in night time ."
+			"Hey it will be {weather_day} in day time and {weather_night} in night time ."
 		],
 
 		"How is the weather?": [
